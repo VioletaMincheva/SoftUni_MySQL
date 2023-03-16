@@ -2,7 +2,7 @@
 
 Homework from SoftUni MySQL course.
 
-Certificate: https://softuni.bg/users/profile/certificates?username=Violeta.Mincheva
+Certificate: https://softuni.bg/certificates/details/131028/5d0fe4f6
 
 COURSE CURRICULUM: TopicHours
 
