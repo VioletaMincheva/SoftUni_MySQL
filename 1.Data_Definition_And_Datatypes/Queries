@@ -1,0 +1,200 @@
+#0
+CREATE DATABASE `minions`;
+
+#1
+CREATE TABLE `minions`(
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
+`name` VARCHAR(50) NOT NULL,
+`age` INT
+);
+CREATE TABLE `towns`(
+`town_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
+`name` VARCHAR(50) NOT NULL
+);
+
+#2
+ALTER TABLE `minions`
+ADD COLUMN `town_id` INT NOT NULL;
+
+ALTER TABLE `minions`
+ADD CONSTRAINT fk_minions_towns
+FOREIGN KEY (`town_id`) REFERENCES `towns` (`id`); 
+
+#3
+INSERT INTO `towns` (`id`, `name`)
+VALUES
+(1, "Sofia"),
+(2, "Plovdiv"),
+(3, "Varna");
+
+INSERT INTO `minions`(`id`, `name`, `age`, `town_id`)
+VALUES 
+(1, "Kevin", 22, 1),
+(2, "Bob", 15, 3),
+(3, "Steward", NULL, 2);
+
+#4
+TRUNCATE TABLE `minions`;
+
+#5
+DROP TABLE `minions`;
+DROP TABLE `towns`;
+
+#6
+CREATE TABLE `people`(
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`name` VARCHAR(200) NOT NULL,
+`picture` BLOB,
+`heght` FLOAT,
+`weight`FLOAT,
+`gender` CHAR(1) NOT NULL,
+`birthdate` DATE NOT NULL,
+`biography` TEXT
+);
+
+INSERT INTO `people` (`id`, `name`, `picture`, `heght`, `weight`, `gender`, `birthdate`, `biography`)
+VALUES
+(1, "Petar", NULL, 1.86, 80.5, "m", '1987-12-14', null),
+(2, "Georgi", NULL, 1.79, 84.5, "m", '1988-05-18', null),
+(3, "Tsveta", NULL, 1.66, 54.4, "f", '1990-09-17', null),
+(4, "Radost", NULL, 1.76, 65.89, "f", '1993-01-26', null),
+(5, "Ralitsa", NULL, 1.97, 96.9, "f", '1981-11-08', null);
+
+#7
+CREATE TABLE `users`(
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`username` VARCHAR(30) NOT NULL,
+`password` VARCHAR(26) NOT NULL,
+`profile_picture` BLOB,
+`last_login_time` TIMESTAMP,
+`is_deleted` INT
+);
+
+INSERT INTO `users` (`id`, `username`, `password`, `profile_picture`, `last_login_time`, `is_deleted`)
+VALUES
+(1, "Petar", "SDHkads", NULL, '2023-01-18 18:45:35', 0),
+(2, "Georgi", "SDHkads214", NULL, '2023-02-18 18:45:35', 1),
+(3, "Tsveta", "678kads", NULL, '2023-01-27 23:45:35', 0),
+(4, "Radost", "SDH897kads", NULL, '2023-01-09 01:45:35', 1),
+(5, "Ralitsa", "SDH2987kads", NULL, '2023-02-26 17:56:35', 0);
+
+#8
+ALTER TABLE `users` 
+CHANGE COLUMN `id` `id` INT NOT NULL,
+DROP PRIMARY KEY;
+
+ALTER TABLE `users`
+ADD CONSTRAINT pk_users
+PRIMARY KEY (`id`, `username`);
+
+#9
+ALTER TABLE `users` 
+CHANGE COLUMN `last_login_time` `last_login_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ;
+
+#10
+ALTER TABLE `users`
+DROP PRIMARY KEY,
+ADD CONSTRAINT pk_id
+PRIMARY KEY(`id`),
+ADD CONSTRAINT uq_username
+UNIQUE(`username`);
+
+#13
+
+CREATE DATABASE `soft_uni`;
+USE `soft_uni`;
+
+CREATE TABLE `towns`(
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`name` VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE `addresses`(
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`address_text` VARCHAR(100) NOT NULL,
+`town_id` INT NOT NULL,
+CONSTRAINT fk_addresses_towns
+FOREIGN KEY (`town_id`)
+REFERENCES `towns` (`id`)
+);
+
+CREATE TABLE `departments`(
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`name` VARCHAR(30) NOT NULL
+);
+
+
+CREATE TABLE `employees`(
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`first_name` VARCHAR(30) NOT NULL,
+`middle_name` VARCHAR(30) NOT NULL,
+`last_name` VARCHAR(30) NOT NULL,
+`job_title` VARCHAR(30) NOT NULL,
+`department_id` INT NOT NULL,
+`hire_date` DATE,
+`salary` FLOAT,
+`address_id` INT,
+CONSTRAINT fk_employees_departments
+FOREIGN KEY (`department_id`)
+REFERENCES `departments` (`id`),
+CONSTRAINT fk_employees_addresses
+FOREIGN KEY (`address_id`)
+REFERENCES `addresses` (`id`)
+);
+
+INSERT INTO `towns` (`name`)
+VALUES
+("Sofia"),
+("Plovdiv"),
+("Varna"),
+("Burgas");
+
+INSERT INTO `departments` (`name`)
+VALUES
+("Engineering"),
+("Sales"),
+("Marketing"),
+("Software Developmen"),
+("Quality Assurance");
+
+INSERT INTO `employees` (`first_name`, `middle_name`, `last_name`, `job_title`, `department_id`, `hire_date`, `salary`)
+VALUES
+("Ivan", "Ivanov", "Ivanov", ".NET Developer", 4, '2013-02-01',	3500.00),
+("Petar", "Petrov", "Petrov", "Senior Engineer", 1, '2004-03-02', 4000.00),
+("Maria", "Petrova", "Ivanova", "Intern", 5, '2016-08-28', 525.25),
+("Georgi", "Terziev", "Ivanov", "CEO", 2, '2007-12-09',	3000.00),
+("Peter", "Pan", "Pan", "Intern", 3, '2016-08-28',	599.88);
+
+#14
+SELECT * FROM `towns`;
+SELECT * FROM `departments`;
+SELECT * FROM `employees`;
+
+#15
+SELECT * FROM `towns`
+ORDER BY `name` ASC;
+
+SELECT * FROM `departments`
+ORDER BY `name` ASC;
+
+SELECT * FROM `employees`
+ORDER BY `salary` DESC;
+
+#16
+SELECT `name` FROM `towns`
+ORDER BY `name` ASC;
+
+SELECT `name` FROM `departments`
+ORDER BY `name` ASC;
+
+SELECT first_name, last_name, job_title, salary FROM `employees`
+ORDER BY `salary` DESC;
+
+#17
+UPDATE `employees`
+SET `salary` = `salary` * 1.1;
+
+SELECT `salary` FROM `employees`;
+
+#18
+DROP SCHEMA `soft_uni`;
