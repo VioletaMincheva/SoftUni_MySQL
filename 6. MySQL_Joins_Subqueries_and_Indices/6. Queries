@@ -124,10 +124,10 @@ ORDER BY e.employee_id
 LIMIT 5;
 
 #11
-SELECT AVG(salary) AS 'avg_salary'
-FROM employees
-GROUP BY department_id
-ORDER BY avg_salary
+SELECT AVG(`salary`) AS 'min_average_salary'
+FROM `employees`
+GROUP BY `department_id`
+ORDER BY `min_average_salary` ASC
 LIMIT 1;
 
 #12
@@ -186,6 +186,19 @@ ON c.`country_code` = mc.`country_code`
 LEFT JOIN `mountains` AS m
 ON mc.mountain_id = m.id
 WHERE mc.country_code IS NULL AND m.id IS NULL;
+
+#16.1
+SELECT COUNT(c.`country_code`) AS 'country_count'
+FROM `countries` AS c
+LEFT JOIN `mountains_countries` AS mc
+ON c.`country_code` = mc.`country_code`
+WHERE mc.country_code IS NULL;
+
+#16.2
+SELECT COUNT(c.`country_code`) AS 'country_count'
+FROM `countries` AS c
+WHERE c.`country_code` NOT IN
+(SELECT `country_code` FROM `mountains_countries`);
 
 #17
 SELECT c.`country_name`, 
